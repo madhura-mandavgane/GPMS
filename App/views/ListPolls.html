@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+<script type="text/javascript">
+
+function LoadPolls() {
+
+   // Call API and display result
+   // search all polls created by employee ID
+   
+   
+}
+
+function ClosePolls() {
+
+   // Call API and display result
+   // Take PollID and close poll
+   // Do you want to close poll?
+   // Display "Poll Closed"  s
+}
+
+function EditPolls() {
+   //  
+}
+</script>
+View Polls
+</head>
+<body>
+
+<br><br><br><br><br>
+<form>
+<table id="EmployeeEntry" cellpadding="10" cellspacing="10">
+  <tr>
+     <td><label for="EmployeeID">Enter Employee ID</label></td>
+     <td><input type="text" ng-model="EmployeeID"></input></td>
+  </tr>
+</table>
+
+<input type="submit" value="List created polls" ng-click="ListByEmployee()"/>
+<table ng-model="PollsEntry" cellpadding="20" cellspacing="30"> 
+  <th>
+     <td>Poll ID</td>
+     <td>Description</td>
+     <td>Status</td>
+     <td>Date of creation</td>
+     <td>Duration</td>
+     <td></td>
+  </th>
+  <tr ng-repeat="poll in PollsList" cellpadding="20" cellspacing="30" >
+		<td>{{poll.id}}
+		</td>
+		<td>test poll
+		</td>
+		<td>{{poll.Status}}
+		</td>
+	    <td>{{poll.creationDate}}
+		</td>
+		<td>duration
+		</td>
+		<td><button type="button" name="Edit" value="Edit" ng-click='go("/editpoll", poll.id)'/>
+		</td>
+		<td><button type="button" name="Delete" value="Delete" ng-click="DeletePoll()"/>
+		</td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

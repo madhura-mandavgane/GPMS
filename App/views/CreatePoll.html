@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript">
+/*
+function LoadAnswerInputs1(count) {
+    // var tableRef = document.getElementById('tblPoll');
+    // tableRef.deleteRow(i+1)   
+    alert('change');
+   for(var i=1; i<=count; i++){
+  
+   var tableRef = document.getElementById('tblPoll');
+
+   // Insert a row in the table at the last row
+   var n = i+1;
+   var newRow = tableRef.insertRow(n);
+   newRow.id  = "tr"+n;
+
+   // Insert a cell in the row at index 0
+   var newCell  = newRow.insertCell(0);
+
+   // Append a text node to the cell
+   var newText  = document.createTextNode("Option " + i);
+   newCell.appendChild(newText);
+
+  // Insert a cell in the row at index 1
+   var newCell  = newRow.insertCell(1);
+
+   // Append a text node to the cell
+   var input  = document.createElement("input");
+   input.id="answer" + i;
+   newCell.appendChild(input);
+   
+   }
+}
+*/
+</script>
+</head>
+<body>
+
+<br><br><br><br><br>
+ <div ng-app="MyApp" ng-controller="GroupsController">
+ <div ng-app="MyApp" ng-controller="PollsController">
+<form>
+<table id="tblPoll" cellpadding="10" cellspacing="10">
+  <tr>
+     <td><label for="Description">Description</label></td>
+     <td><textarea ng-model="Description" rows="2" cols="50" tabindex="4"></textarea></td>
+  </tr> 
+  <tr>
+     <td><label for="Question">Question</label></td>
+     <td><textarea ng-model="Question" rows="5" cols="50" tabindex="4"></textarea></td>
+  </tr> 
+  <tr>
+     <td><label>Answer Options</label></td>
+     <td> 
+        <select name="AnswerOptions" ng-model="TotalAnswers">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+     </td>       	
+  </tr>
+  <tr ng-if="TotalAnswers >= 1">
+     <td>Option 1 </td>
+	 <td><input type="text" ng-model="AnswerOption1"></td>
+  </tr>
+   <tr ng-if="TotalAnswers >= 2">
+     <td>Option 2 </td>
+	 <td><input type="text" ng-model="AnswerOption2"></td>
+  </tr>
+   <tr ng-if="TotalAnswers >= 3">
+     <td>Option 3 </td>
+	 <td><input type="text" ng-model="AnswerOption3"></td>
+  </tr>
+   <tr ng-if="TotalAnswers >= 4">
+     <td>Option 4 </td>
+	 <td><input type="text" ng-model="AnswerOption4"></td>
+  </tr>
+   <tr ng-if="TotalAnswers >= 5">
+     <td>Option 5 </td>
+	 <td><input type="text" ng-model="AnswerOption5"></td>
+  </tr>
+   <tr ng-if="TotalAnswers >= 6">
+     <td>Option 6 </td>
+	 <td><input type="text" ng-model="AnswerOption6"></td>
+  </tr>
+   <tr ng-if="TotalAnswers >= 7">
+     <td>Option 7 </td>
+	 <td><input type="text" ng-model="AnswerOption7"></td>
+  </tr>
+   <tr ng-if="TotalAnswers >= 8">
+     <td>Option 8 </td>
+	 <td><input type="text" ng-model="AnswerOption8"></td>
+  </tr>
+   <tr ng-if="TotalAnswers >= 9">
+     <td>Option 9 </td>
+	 <td><input type="text" ng-model="AnswerOption9"></td>
+  </tr>
+   <tr ng-if="TotalAnswers >= 10">
+     <td>Option 10 </td>
+	 <td><input type="text" ng-model="AnswerOption10"></td>
+  </tr>
+  
+  <tr>
+     <td><label for="CorrectOption">Correct Option</label></td>
+    <td>
+       <select ng-model="CorrectOption">
+         <option value="1">1</option>
+         <option value="2">2</option>
+         <option value="3">3</option>
+         <option value="4">4</option>
+         <option value="5">5</option>
+         <option value="6">6</option>
+         <option value="7">7</option>
+         <option value="8">8</option>
+         <option value="9">9</option>
+         <option value="10">10</option>
+       </select>
+	
+    </td>
+  </tr>
+  <tr>
+     <td><label for="ParticipatingGroups">Select Group</label></td>
+  	 <td><select ng-model="ParticipatingGroups" ng-init="ListGroups()" ng-options="x.name for x in list"></select></td>
+  </tr>
+  
+  <tr>
+     <td><label for="StartDate">Start Date</label></td>
+     <td><input type="date" ng-model="StartDate"></td>
+  </tr>
+  
+  <tr>
+     <td><label for="EndDate">End Date</label></td>
+     <td><input type="date" ng-model="EndDate"></td>
+  </tr>
+
+  <tr> 
+     <td><label for="Visibility">Visibility</label></td>
+     <td>
+         <input type="radio" ng-model="visibility" ng-value="Public">Public
+         <input type="radio" ng-model="visibility" ng-value="GroupAdmin">GroupAdmin
+     </td> 
+  </tr>
+ </table>
+
+ <input type="submit" value="Create Poll" ng-click="AddPoll()"/>
+</form>
+</div>
+</div>
+</body>
+</html>
