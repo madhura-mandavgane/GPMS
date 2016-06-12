@@ -19,12 +19,12 @@
      <td><label for="CorrectOption">Correct Option</label></td>
      <td><input type="text" ng-model="CorrectOption" readonly="readonly"></input></td>
   </tr>
-  
+  <!--
   <tr>
      <td><label for="ParticipatingGroups">Select Group</label></td>
-  	 <td><select ng-model="ParticipatingGroups" ng-options="x.name for x in list"></select></td>
+  	 <td><select ng-model="ParticipatingGroups" ng-init="ListGroupByID()" ng-options="x.name for x in list"  ng-options="x.name for x in list.ParticipatingGroups"></select></td>
   </tr>
-  
+  -->
   <tr>
      <td><label for="StartDate">Start Date</label></td>
      <td><input type="date" ng-model="StartDate"></td>
@@ -44,7 +44,7 @@
   </tr>
  </table>
 
- <input type="submit" value="Edit Poll" ng-click="EditPoll()"/>
+ <input type="submit" value="Update Poll" ng-click="UpdatePoll()"/>
 </form>
 </div>
 

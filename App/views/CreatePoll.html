@@ -2,40 +2,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript">
-/*
-function LoadAnswerInputs1(count) {
-    // var tableRef = document.getElementById('tblPoll');
-    // tableRef.deleteRow(i+1)   
-    alert('change');
-   for(var i=1; i<=count; i++){
-  
-   var tableRef = document.getElementById('tblPoll');
-
-   // Insert a row in the table at the last row
-   var n = i+1;
-   var newRow = tableRef.insertRow(n);
-   newRow.id  = "tr"+n;
-
-   // Insert a cell in the row at index 0
-   var newCell  = newRow.insertCell(0);
-
-   // Append a text node to the cell
-   var newText  = document.createTextNode("Option " + i);
-   newCell.appendChild(newText);
-
-  // Insert a cell in the row at index 1
-   var newCell  = newRow.insertCell(1);
-
-   // Append a text node to the cell
-   var input  = document.createElement("input");
-   input.id="answer" + i;
-   newCell.appendChild(input);
-   
-   }
-}
-*/
-</script>
 </head>
 <body>
 
@@ -146,8 +112,8 @@ function LoadAnswerInputs1(count) {
   <tr> 
      <td><label for="Visibility">Visibility</label></td>
      <td>
-         <input type="radio" ng-model="visibility" ng-value="Public">Public
-         <input type="radio" ng-model="visibility" ng-value="GroupAdmin">GroupAdmin
+         <input type="radio" name="visibility" ng-model="visibility" value="Public">Public
+         <input type="radio" name="visibility" ng-model="visibility" value="GroupAdmin">GroupAdmin
      </td> 
   </tr>
  </table>

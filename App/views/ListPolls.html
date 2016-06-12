@@ -28,12 +28,13 @@ function ClosePolls() {
 function EditPolls() {
    //  
 }
+
 </script>
-View Polls
 </head>
 <body>
-
-<br><br><br><br><br>
+ <div ng-app="MyApp" ng-controller="GroupsController">
+ <div ng-app="MyApp" ng-controller="PollsController">
+<br><br><br><br>
 <form>
 <table id="EmployeeEntry" cellpadding="10" cellspacing="10">
   <tr>
@@ -43,27 +44,30 @@ View Polls
 </table>
 
 <input type="submit" value="List created polls" ng-click="ListByEmployee()"/>
-<table ng-model="PollsEntry" cellpadding="20" cellspacing="30"> 
-  <th>
+<br><br>
+<table ng-model="PollsEntry"> 
+  <tr>
      <td>Poll ID</td>
      <td>Description</td>
      <td>Status</td>
      <td>Date of creation</td>
      <td>Duration</td>
-     <td></td>
-  </th>
-  <tr ng-repeat="poll in PollsList" cellpadding="20" cellspacing="30" >
+	 <td>Action</td>
+	 <td>Action</td>
+	 <td>Action</td>
+  </tr>
+  <tr ng-repeat="poll in PollsList">
 		<td>{{poll.id}}
 		</td>
-		<td>test poll
+	    <td>{{poll.Description}}
 		</td>
 		<td>{{poll.Status}}
 		</td>
 	    <td>{{poll.creationDate}}
 		</td>
-		<td>duration
+		<td>{{poll.Duration}}
 		</td>
-		<td><button type="button" name="Edit" value="Edit" ng-click='go("/editpoll", poll.id)'/>
+	    <td><button type="button" name="Edit" value="Edit" ng-click='go("/editpoll", poll.id)'/>
 		</td>
 		<td><button type="button" name="Delete" value="Delete" ng-click="DeletePoll()"/>
 		</td>
@@ -71,6 +75,7 @@ View Polls
 </table>
 
 </form>
-
+</div>
+</div>
 </body>
 </html>

@@ -24,6 +24,7 @@ exports.List = function(req, res) {
     console.log('Retrieving poll: ' + id);
     db.collection('polls', function(err, collection) {
 		collection.findOne({'id':id	}, function(err, item) {
+		console.log(JSON.stringify(item));
             res.send(item);
         });
     });
@@ -50,19 +51,22 @@ exports.ListAll = function(req, res) {
 
 exports.Add = function(req, res) {
     //TODO: validations
-    var poll = req.body;
-	console.log('Request.body=' + poll);
+
+	var poll = JSON.parse(JSON.stringify(req.body));
     console.log('Adding poll: ' + JSON.stringify(poll));
+
     db.collection('polls', function(err, collection) {
         collection.insert(poll, {safe:true}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred'});
             } else {
-                console.log('Success: ' + JSON.stringify(result[0]));
-                res.send(result[0]);
+                console.log('Success: ' + JSON.stringify(result));
+                res.send(result);
             }
         });
-    });
+    }
+	
+);
 }
 
 exports.Update = function(req, res) {
@@ -102,15 +106,14 @@ exports.Delete = function(req, res) {
 // Populate database with sample data -- Only used once: the first time the application is started.
 // You'd typically not find this code in a real-life app, since the database would already exist.
 var populateDB = function() {
-
     var polls = [
     {
-		id: "1000",
+		description:"test poll",
 		createdBy: "8073",
 		pollStatus: "0",
 		creationDate: "05/22/2016", 
-		openingDate: "",
-		closingDate: "",
+		openingDate: "08/08/2016",
+		closingDate: "08/09/2016",
 		question: "What is the capital of India ?",
 		answers: [
 		{ 
@@ -142,12 +145,12 @@ var populateDB = function() {
 		]
 	},
 	{
-		id: "1001",
+		description:"test poll",
 		createdBy: "8073",
 		pollStatus: "0",
 		creationDate: "05/22/2016", 
-		openingDate: "",
-		closingDate: "",
+		openingDate: "08/08/2016",
+		closingDate: "08/09/2016",
 		question: "What is the capital of MH ?",
 		answers: [
 		{ 
@@ -183,5 +186,4 @@ var populateDB = function() {
     db.collection('polls', function(err, collection) {
         collection.insert(polls, {safe:true}, function(err, result) {});
     });
-
-};
+}
