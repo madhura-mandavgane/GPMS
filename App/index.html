@@ -2,27 +2,27 @@
 <html lang="en-US">
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/navbarcss.css">
+<link rel="stylesheet" href="css/style.css">
 
 <body>
 
 <div ng-app="GroupPollManagementSystem">
-  <div class="container">
     <div ui-view></div>
-  </div>
 </div>
 
 </body>
 
 <script src="content/lib/angular.js"></script>
 <script src="content/lib/angular-ui-router.js"></script>
+<script src="content/lib/checklist-model.js"></script>
+
 <script src="src/init.js"></script>
 <script src="src/route.js"></script>
-
-
+<script src="src/service.js"></script>
 <script src="src/controllers/GroupsController.js"></script>
+<script src="src/controllers/OperationGroupController.js"></script>
 <script src="src/controllers/PollsController.js"></script>
 <script src="src/controllers/HomeController.js"></script>
 <script src="src/controllers/MasterController.js"></script>
-<!--<script src="src/controllers/CreateGroupController.js"></script>-->
 
 </html>

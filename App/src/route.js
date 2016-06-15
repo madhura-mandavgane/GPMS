@@ -4,7 +4,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     
 	$stateProvider
 		.state('master', {
-            templateUrl: 'views/master.html', controller : 'MasterController'
+            templateUrl: 'views/Master.html', controller : 'MasterController'
         });
 	
     $stateProvider
@@ -26,12 +26,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url: '/polls',
             templateUrl: 'views/ListPolls.html', controller : 'PollsController'
         });	
+
 	$stateProvider
-		.state('master.creategroup', {
-            url: '/creategroup',
-            templateUrl: 'views/CreateGroup.html', controller : 'CreateGroupController'
+		.state('master.operationGroup', {
+            url: '/groups/:operation?groupID',
+            templateUrl: 'views/operationGroup.html', controller : 'OperationGroupController'
         });
-		
+	
 	$stateProvider
 		.state('master.createpoll', {
             url: '/createpoll',

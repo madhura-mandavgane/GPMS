@@ -1,3 +1,51 @@
+<div class="wrapper">
+    <legend>List of group names<span class="add"><a ui-sref="master.operationGroup({operation:'add'})">Create new group</a></span></legend>
+    <div class="table-responsive">
+	
+	    <table id="EmployeeEntry"class="table table-striped table-bordered">
+                <tr>
+                        <td><label for="EmployeeID">Enter Employee ID</label></td>
+                        <td><input type="text" ng-model="EmployeeID"></input></td>
+                </tr>
+        </table>
+		<input type="submit" value="List created polls" ng-click="ListByEmployee()"/>
+       
+		<table ng-model="PollsEntry" class="table table-striped table-bordered">
+				<thead>
+						<tr>
+						     <th>Poll ID</th>
+                             <th>Description</th>
+                             <th>Status</th>
+                             <th>Date of creation</th>
+                             <th>Duration</th>
+	                         <th>Action</th>
+
+						</tr>
+				</thead>
+				<tbody>
+				        <tr ng-repeat="poll in PollsList">
+                            <td style="width:5%;">{{poll.id}}</td>
+                            <td style="width:25%;">{{poll.Description}}</td>
+                            <td style="width:35%;">{{poll.Status}}</td>
+                            <td style="width:25%;">{{poll.creationDate}}</td>
+							<td style="width:25%;">{{poll.creationDate}}</td>
+                            <td style="width:10%;text-align:center;"><a ui-sref="master.operationGroup({operation:'edit',groupId:data.groupID})">Edit</a>
+                                <a ng-click="DeletePoll()" class="delete">Delete</a>
+							</td>  
+						</tr>
+						
+
+	    <td><button type="button" name="Edit" value="Edit" ng-click='go("/editpoll", poll.id)'/>
+		</td>
+		<td><button type="button" name="Delete" value="Delete" ng-click="DeletePoll()"/>
+		</td>
+	</tr>
+				</tbody>
+		 </table>
+	</div>
+</div>
+
+<!--
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,27 +56,6 @@ table, th, td {
 }
 </style>
 <script type="text/javascript">
-
-function LoadPolls() {
-
-   // Call API and display result
-   // search all polls created by employee ID
-   
-   
-}
-
-function ClosePolls() {
-
-   // Call API and display result
-   // Take PollID and close poll
-   // Do you want to close poll?
-   // Display "Poll Closed"  s
-}
-
-function EditPolls() {
-   //  
-}
-
 </script>
 </head>
 <body>
@@ -79,3 +106,4 @@ function EditPolls() {
 </div>
 </body>
 </html>
+-->

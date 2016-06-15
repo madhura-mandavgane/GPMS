@@ -1,32 +1,30 @@
-app.controller('GroupsController', function($scope,$http) {
+app.controller('GroupsController', function($scope,$http,$state,apiService) {
 
-$scope.ListGroups = function(){
-   $http({
-           method: 'GET',
-           url: 'http://localhost:9095/groups'
-         }).then(function successCallback(response) {
-		 alert('success');
-		 $scope.list=response.data;
-		 alert(response.data);
-    }, function errorCallback(response) {
-	alert('failed');
-  });
-
-};
-
-$scope.ListGroupByID = function(){
-   $http({
-           method: 'GET',
-           url: 'http://localhost:9095/groups/' + id,
-         }).then(function successCallback(response) {
-		 alert('success');
-		 $scope.list=response.data;
-		 alert(response.data);
-    }, function errorCallback(response) {
-	alert('failed');
-  });
-
-};
-
+apiService.apiCalltoServer('Groups','GET').then(function(response)
+{
+    $scope.groupList = response.data.groups;
 });
 
+apiService.apiCalltoServer('Employess','GET').then(function(response)
+{
+    //	$scope.employees = response.data.employees;
+});
+
+$scope.deleteRecord = function(groupId)
+{
+    
+      apiService.apiCalltoServer('Groups/'+groupId,'DELETE').then(function(response)
+        {
+            alert("Deleted");
+        });
+}
+
+	/*$http({
+		method : "GET",
+		url : "http://10.44.67.84:8081/Groups"
+		}).then(function successCall(response){
+			$scope.groupList = response.data.groups;
+		}, function failureCall(response){
+			alert($scope.list);
+		});*/
+});
