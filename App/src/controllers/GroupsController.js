@@ -1,6 +1,6 @@
 app.controller('GroupsController', function($scope,$http,$state,apiService) {
 
-apiService.apiCalltoServer('Groups','GET').then(function(response)
+/*apiService.apiCalltoServer('Groups','GET').then(function(response)
 {
     $scope.groupList = response.data.groups;
 });
@@ -8,7 +8,7 @@ apiService.apiCalltoServer('Groups','GET').then(function(response)
 apiService.apiCalltoServer('Employess','GET').then(function(response)
 {
     //	$scope.employees = response.data.employees;
-});
+});*/
 
 $scope.deleteRecord = function(groupId)
 {
@@ -28,3 +28,5 @@ $scope.deleteRecord = function(groupId)
 			alert($scope.list);
 		});*/
 });
+
+

@@ -23,9 +23,10 @@ exports.List = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving poll: ' + id);
     db.collection('polls', function(err, collection) {
-		collection.findOne({'id':id	}, function(err, item) {
-		console.log(JSON.stringify(item));
-            res.send(item);
+		var o_id = new mongo.ObjectId(id);
+		collection.find({'_id':o_id}).toArray(function(err, items) {
+		console.log(JSON.stringify(items));
+            res.send(JSON.stringify(items));
         });
     });
 };	
@@ -44,6 +45,21 @@ exports.ListAll = function(req, res) {
     console.log('Listing all polls');
     db.collection('polls', function(err, collection) {
         collection.find().toArray(function(err, items) {
+            res.send(items);
+        });
+    });
+};
+
+exports.ListOpenPollsForUser = function(req, res) {
+    console.log('Listing all polls');
+    db.collection('polls', function(err, collection) {
+	var today = new Date().toISOString();
+	var date = new Date(today);
+	console.log(today);
+    collection.find(
+		       { //"closingDate":{ $gte: date }, "openingDate":{ $lte: date }
+			     "closingDate":{ $gte:date } 
+			   }).toArray(function(err, items) {
             res.send(items);
         });
     });
@@ -91,7 +107,8 @@ exports.Delete = function(req, res) {
     var id = req.params.id;
     console.log('Deleting poll: ' + id);
     db.collection('polls', function(err, collection) {
-        collection.remove({'id':id}, {safe:true}, function(err, result) {
+        console.log(collection);
+        db.collection.remove({'_id':new ObjectId(id)}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred - ' + err});
             } else {
@@ -102,39 +119,82 @@ exports.Delete = function(req, res) {
     });
 }
 
+exports.Commit = function(req, res) {
+    //TODO: validations
+
+	var poll = JSON.parse(JSON.stringify(req.body));
+    console.log('Commiting poll: ' + JSON.stringify(poll));
+
+    db.collection('polls', function(err, collection) {
+        collection.insert(poll, {safe:true}, function(err, result) {
+            if (err) {
+                res.send({'error':'An error has occurred'});
+            } else {
+                console.log('Success: ' + JSON.stringify(result));
+                res.send(result);
+            }
+        });
+    }
+	
+);
+}
+
+var addDays = function(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
+var backDate = function(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+}
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Populate database with sample data -- Only used once: the first time the application is started.
 // You'd typically not find this code in a real-life app, since the database would already exist.
 var populateDB = function() {
+    var creationdt = new Date();
+	var openingdt1 = creationdt;
+	var closingdt1 = addDays(creationdt, 3);
+	
+	var openingdt2  = backDate(creationdt, 3);
+	var closingdt2  = backDate(creationdt, 2);
+    var creationdt2 = backDate(creationdt, 4); 
+   
     var polls = [
     {
-		description:"test poll",
+		description:"Selfie Shot Question",
 		createdBy: "8073",
-		pollStatus: "0",
-		creationDate: "05/22/2016", 
-		openingDate: "08/08/2016",
-		closingDate: "08/09/2016",
+		creationDate: creationdt, 
+		openingDate: openingdt1,
+		closingDate: closingdt1,
+        pollStatus:"open",   
 		question: "What is the capital of India ?",
 		answers: [
 		{ 
-		    option: "a",
-			ans:"Mumbai"
-	    },
+                   "ans":"Mumbai",
+                   "correct":"false",
+                   "answeredCount":"1" 
+	        },
 		{ 
-		    option: "b",
-			ans:"Calcutta"
-	    },
+		   "ans":"Calcutta",
+                   "correct":"false",
+                   "answeredCount":"2"
+	        },
 		{ 
-		    option: "c",
-			ans:"Delhi"
-	    },
+                   "ans":"Delhi",
+                   "correct":"true",
+                   "answeredCount":"4"
+	        },
 		{ 
-		    option: "d",
-			ans:"Bglore"
-	    }
-	    ],
-		correctOption: "c",
-		isResultVisibleToParticipants: "true",
+		   "ans":"Bglore",
+                   "correct":"false",
+                   "answeredCount":"6"
+       	        }
+	        ],                
+		isResultVisibleToParticipants: "true",                
 		ParticipantGroups : [
 		{
 		    groupId: "1000"
@@ -145,32 +205,35 @@ var populateDB = function() {
 		]
 	},
 	{
-		description:"test poll",
+		description:"Trip Planning",
 		createdBy: "8073",
-		pollStatus: "0",
-		creationDate: "05/22/2016", 
-		openingDate: "08/08/2016",
-		closingDate: "08/09/2016",
-		question: "What is the capital of MH ?",
+		creationDate: creationdt2, 
+		openingDate: openingdt2,
+		closingDate: closingdt2,
+                pollStatus:"",   
+		question: "Where should we go for trip on this Sunday ?",
 		answers: [
 		{ 
-		    option: "a",
-			ans:"Mumbai"
-	    },
+                   "ans":"Mumbai",
+                   "correct":"false",
+                   "answeredCount":"1" 
+	        },
 		{ 
-		    option: "b",
-			ans:"Calcutta"
-	    },
+		   "ans":"Calcutta",
+                   "correct":"false",
+                   "answeredCount":"2"
+	        },
 		{ 
-		    option: "c",
-			ans:"Delhi"
-	    },
+                   "ans":"Delhi",
+                   "correct":"false",
+                   "answeredCount":"4"
+	        },
 		{ 
-		    option: "d",
-			ans:"Bglore"
-	    }
-	    ],
-		correctOption: "a",
+		   "ans":"Bglore",
+                   "correct":"false",
+                   "answeredCount":"6"
+       	        }
+	        ],          
 		isResultVisibleToParticipants: "true",
 		ParticipantGroups : [
 		{
@@ -184,6 +247,6 @@ var populateDB = function() {
 	];
 
     db.collection('polls', function(err, collection) {
-        collection.insert(polls, {safe:true}, function(err, result) {});
+        collection.insert(polls, function(err, result) {});
     });
 }

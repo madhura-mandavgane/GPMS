@@ -32,9 +32,10 @@ app.get ('/groups/:id',     groups.List);
 app.put ('/groups/:id',     groups.Update);
 app.delete('/groups/:id',   groups.Delete);
 
-app.post('/polls',         polls.Add);
-app.get ('/polls',         polls.ListAll);
-app.get ('/polls/:id',     polls.List);
-app.get ('/polls/employee/:id',  polls.ListByEmployee);
-app.put ('/polls/:id',     polls.Update);
-app.delete('/polls/:id',   polls.Delete);
+app.post('/polls',              polls.Add);
+app.get ('/polls',              polls.ListAll);
+app.get ('/polls/:id',          polls.List);
+app.get ('/employee/:id/polls', polls.ListByEmployee);
+app.get ('/employee/:id/open/polls',         polls.ListOpenPollsForUser);
+app.put ('/polls/:id',          polls.Update);
+app.delete('/polls/:id',        polls.Delete);

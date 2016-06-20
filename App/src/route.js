@@ -30,18 +30,32 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state('master.operationGroup', {
             url: '/groups/:operation?groupID',
-            templateUrl: 'views/operationGroup.html', controller : 'OperationGroupController'
+            templateUrl: 'views/OperationGroup.html', controller : 'OperationGroupController'
         });
 	
 	$stateProvider
 		.state('master.createpoll', {
-            url: '/createpoll',
+            url: '/poll',
             templateUrl: 'views/CreatePoll.html', controller : 'PollsController'
         });
 	
+	
 	$stateProvider
 		.state('master.editpoll', {
-            url: '/editpoll',
-            templateUrl: 'views/EditPoll.html', controller : 'PollsController'
+            url: '/poll/{id}',
+            templateUrl: 'views/CreatePoll.html', controller : 'PollsController'
         });
+		
+	$stateProvider
+		.state('master.openpolls', {
+            url: '/open/polls',
+			params: { id:null, operation:null},
+            templateUrl: 'views/OpenPolls.html', controller : 'OpenPollsController'
+        });
+		
+	$stateProvider
+		.state('master.answerpoll', {
+            url: '/answer/poll/{id}',
+            templateUrl: 'views/CommitPolls.html', controller : 'CommitPollsController'
+        });	
 });
