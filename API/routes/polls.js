@@ -175,21 +175,25 @@ var populateDB = function() {
 		answers: [
 		{ 
                    "ans":"Mumbai",
+				     "optionNo" : "1",
                    "correct":"false",
                    "answeredCount":"1" 
 	        },
 		{ 
 		   "ans":"Calcutta",
+		     "optionNo" : "2",
                    "correct":"false",
                    "answeredCount":"2"
 	        },
 		{ 
                    "ans":"Delhi",
+				     "optionNo" : "3",
                    "correct":"true",
                    "answeredCount":"4"
 	        },
 		{ 
 		   "ans":"Bglore",
+		     "optionNo" : "4",
                    "correct":"false",
                    "answeredCount":"6"
        	        }
@@ -215,21 +219,25 @@ var populateDB = function() {
 		answers: [
 		{ 
                    "ans":"Mumbai",
+				   "optionNo" : "1",
                    "correct":"false",
                    "answeredCount":"1" 
 	        },
 		{ 
-		   "ans":"Calcutta",
+		           "ans":"Calcutta",
+				   "optionNo" : "2",
                    "correct":"false",
                    "answeredCount":"2"
 	        },
 		{ 
                    "ans":"Delhi",
+				   "optionNo" : "3",
                    "correct":"false",
                    "answeredCount":"4"
 	        },
 		{ 
-		   "ans":"Bglore",
+		           "ans":"Bglore",
+		           "optionNo" : "4",
                    "correct":"false",
                    "answeredCount":"6"
        	        }

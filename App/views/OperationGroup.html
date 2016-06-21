@@ -11,10 +11,10 @@
         </div>-->
         
         <div class="row form-field">
-            <div class="col-xs-4 label"><label>Members:</label></div>
+            <div class="col-xs-4 lable"><lable>Members:</lable></div>
             <div class="col-xs-8">
                 <ul class="checkbox-grid">
-                    <li ng-repeat="data in employees"><input type="checkbox" name="'test'+{{$index+1}}" checklist-model="checkedEmp" checklist-value="data.id"/><label for="'test'+{{$index+1}}">{{data.name}}</label></li>
+                    <li ng-repeat="data in employees"><input type="checkbox" name="'test'+{{$index+1}}" checklist-model="checkedEmp" checklist-value="data._id"/><label for="'test'+{{$index+1}}">{{data.first_name}} {{data.last_name}}</label></li>
                     <!--<li><input type="checkbox" name="text2" value="value2" /><label for="text2">Text 2</label></li>
                     <li><input type="checkbox" name="text3" value="value3" /><label for="text3">Text 3</label></li>
                     <li><input type="checkbox" name="text4" value="value4" /><label for="text4">Text 4</label></li>

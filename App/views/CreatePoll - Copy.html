@@ -1,0 +1,87 @@
+
+<div class="wrapper">
+ <div ng-app="MyApp" ng-controller="GroupsController">
+ <div ng-app="MyApp" ng-controller="PollsController">
+ <div class="table-responsive">
+<table id="tblPoll" cellpadding="10" cellspacing="10" class="table table-striped table-bordered">
+  <tr>
+     <td><label for="Description">Description</label></td>
+     <td><textarea ng-model="Description" rows="2" cols="50" tabindex="4"></textarea></td>
+  </tr> 
+  <tr>
+     <td><label for="Question">Question</label></td>
+     <td><textarea ng-model="Question" rows="5" cols="50" tabindex="4"></textarea></td>
+  </tr> 
+  <tr>
+     <td><label>Answer Options</label></td>
+     <td> 
+        <select name="AnswerOptions" ng-model="TotalAnswers" ng-change="totalAnswerChanged()">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+     </td>       	
+  </tr>
+  <tr ng-repeat="a in answersCount">
+     <td>Option {{a + 1}} </td>
+	 <td><input type="text" ng-model="answers[a]"></td>
+  </tr>
+   
+  
+  <tr>
+     <td><label for="CorrectOption">Correct Option</label></td>
+    <td>
+       <select ng-model="CorrectOption">
+         <option value="1">1</option>
+         <option value="2">2</option>
+         <option value="3">3</option>
+         <option value="4">4</option>
+         <option value="5">5</option>
+         <option value="6">6</option>
+         <option value="7">7</option>
+         <option value="8">8</option>
+         <option value="9">9</option>
+         <option value="10">10</option>
+       </select>
+	
+    </td>
+  </tr>
+  <tr>
+     <td><label for="ParticipatingGroups">Select Group</label></td>
+  	 <td><select ng-model="ParticipatingGroups" >
+		<option ng-repeat="gl in groupList" value="gl.id">{{gl.name}}</option>	
+	</select></td>
+  </tr>
+  
+  <tr>
+     <td><label for="StartDate">Start Date</label></td>
+     <td><input type="date" ng-model="StartDate"></td>
+  </tr>
+  
+  <tr>
+     <td><label for="EndDate">End Date</label></td>
+     <td><input type="date" ng-model="EndDate"></td>
+  </tr>
+
+  <tr> 
+     <td><label for="Visibility">Visibility</label></td>
+     <t	d>
+         <input type="radio" name="visibility" ng-model="visibility" value="Public">Public
+         <input type="radio" name="visibility" ng-model="visibility" value="GroupAdmin">GroupAdmin
+     </td> 
+  </tr>
+ </table>
+
+ <input type="submit" value="Create Poll" ng-click="AddPoll()"/>
+
+</div></div>
+</div>
+</div>
+

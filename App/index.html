@@ -1,9 +1,19 @@
+
 <!DOCTYPE html>
 <html lang="en-US">
-<link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/navbarcss.css">
-<link rel="stylesheet" href="css/style.css">
-
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/navbarcss.css">
+    <link rel="stylesheet" href="css/loginStyle.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+    <title>Polling System</title>
+    
+</head>
 <body>
 
 <div ng-app="GroupPollManagementSystem">
@@ -15,10 +25,12 @@
 <script src="content/lib/angular.js"></script>
 <script src="content/lib/angular-ui-router.js"></script>
 <script src="content/lib/checklist-model.js"></script>
+<script src="content/lib/async.js"></script>    
 
 <script src="src/init.js"></script>
 <script src="src/route.js"></script>
 <script src="src/service.js"></script>
+
 <script src="src/controllers/GroupsController.js"></script>
 <script src="src/controllers/OperationGroupController.js"></script>
 <script src="src/controllers/PollsController.js"></script>
@@ -26,5 +38,5 @@
 <script src="src/controllers/MasterController.js"></script>
 <script src="src/controllers/OpenPollsController.js"></script>
 <script src="src/controllers/CommitPollsController.js"></script>
-
+<script src="src/controllers/PollResultController.js"></script>
 </html>

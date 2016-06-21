@@ -1,4 +1,4 @@
-app.controller('CommitPollsController', function($scope, $location, $http, $filter, apiService, $stateParams) {
+app.controller('PollResultController', function($scope, $location, $http, $filter, apiService, $stateParams) {
 $scope.answers=[];
 $scope.answerObj = [];
 $scope.Poll={};
@@ -25,30 +25,6 @@ if($stateParams.id){
 		 $scope.Pollid = $scope.PollsList[0]["_id"];
 		 alert(JSON.stringify($scope.PollsList));
 		 $stateParams.id = 0;
-    }, function errorCallback(response) {
-	alert('failed');
-  	});
-};
-
-$scope.CommitPoll = function() {
-
-	for(var i=0 ; i<$scope.answers.length; i++) {
-		{
-		   var count =  parseInt($scope.answerObj[i]["answeredCount"]);
-		   $scope.answerObj[i]["answeredCount"] = count + 1;
-	        alert($scope.answerObj[i]["answeredCount"]);
-		}
-	}
-    $scope.Poll.answers = $scope.answerObj;
-    alert(JSON.stringify($scope.Poll));
-   
-	$http({
-           method: 'PUT',
-		   data: JSON.stringify($scope.Poll),
-           url: 'http://localhost:9095/polls/' + $scope.Pollid
-         }).then(function successCallback(response) {
-
-		 $scope.PollsList=response.data;
     }, function errorCallback(response) {
 	alert('failed');
   	});

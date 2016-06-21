@@ -28,6 +28,8 @@
                             <td style="width:25%;">{{poll.closingDate}}</td>
 			                <td style="width:10%;text-align:center;">
                                 <a ui-sref="master.answerpoll({id:poll._id})">Submit Answer</a>							
+								<!--<div ng-if="new Date() >= poll.closingDate"> <a ui-sref="master.viewpollresult({id:poll._id})">View Result</a> </div>-->
+								<a ui-sref="master.viewpollresult({id:poll._id})">View Result</a>
 			                </td>  
 			</tr>
 						

@@ -1,0 +1,29 @@
+<div class="wrapper">
+    <legend>Poll Result</legend>
+    <div class="table-responsive">
+		<table ng-model="PollsEntry" class="table table-striped table-bordered">
+		  <tr>
+            <td><label for="Description">Description</label></td>
+            <td><textarea ng-model="Description" rows="2" cols="50" tabindex="4"></textarea></td>
+          </tr> 
+          <tr>
+            <td><label for="Question">Question</label></td>
+            <td><textarea ng-model="Question" rows="5" cols="50" tabindex="4"></textarea></td>
+          </tr>
+        </table>
+      	<table class="table table-striped table-bordered">
+		  <tr>
+		      <th>Option</th>
+			  <th>Description</th>
+			  <th>Votes</th>
+			  <th>Correct answer (if applicable)</th>
+		  </tr>
+		  <tr ng-repeat="a in answerObj">
+              <td>{{a.optionNo}}</td>
+			  <td>{{a.ans}}</td>
+			  <td>{{a.answeredCount}}</td>
+			  <td><input type="checkbox" ng-checked={{a.correct}}></td>
+          </tr>
+		</table>
+	</div>
+</div>

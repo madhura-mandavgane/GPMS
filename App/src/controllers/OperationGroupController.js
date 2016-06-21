@@ -7,11 +7,18 @@ app.controller('OperationGroupController', function($scope,$http,$state,apiServi
  else
  $scope.title = "Edit Group";
  
+ 
+ apiService.apiCalltoServer('employees','GET').then(function(response)
+            {
+                $scope.employees = response.data;
+            });
+            
  $scope.submit = function()
   {
       var dataToSend = {
+          "eid" : $scope.checkedEmp[0], //after login
           "groupName" : $scope.groupName,
-          "memebers" : $scope.checkedEmp
+          "members" : $scope.checkedEmp
       }
       if($stateParams.operation == "add")
       {
