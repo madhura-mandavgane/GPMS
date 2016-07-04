@@ -14,6 +14,8 @@ if($stateParams.id){
 		 
 		 $scope.answers = $scope.PollsList[0]["answers"];
          $scope.Poll = $scope.PollsList[0];   
+		 $scope.answerObj = $scope.answers;
+		 /*
 		 for(var i=0; i<$scope.answers.length; i++)
 		 {
             $scope.answerObj.push({ans:$scope.answers[i].ans,
@@ -21,25 +23,36 @@ if($stateParams.id){
   							correct:$scope.answers[i].correct,
 							answeredCount:$scope.answers[i].answeredCount});		 
  		 }
-		 
+		 */
 		 $scope.Pollid = $scope.PollsList[0]["_id"];
 		 alert(JSON.stringify($scope.PollsList));
 		 $stateParams.id = 0;
+		 $scope.answers =[];
     }, function errorCallback(response) {
 	alert('failed');
   	});
 };
 
 $scope.CommitPoll = function() {
-
-	for(var i=0 ; i<$scope.answers.length; i++) {
-		{
-		   var count =  parseInt($scope.answerObj[i]["answeredCount"]);
-		   $scope.answerObj[i]["answeredCount"] = count + 1;
-	        alert($scope.answerObj[i]["answeredCount"]);
-		}
+ 
+    alert(JSON.stringify($scope.answerObj));
+/*
+	for(var i=0; i<$scope.answerObj; i++)
+	{
+	   alert($scope.answerObj[i]["answer"]);
+	   if($scope.answerObj[i]["answer"] == $scope.answers[0])
+	   {
+	      alert($scope.answerObj[i]["answer"]);
+		  var count =  parseInt($scope.answerObj[i]["answeredCount"]);
+		  $scope.answerObj[i]["answeredCount"] = count + 1;
+	   }
 	}
+
+	alert(JSON.stringify($scope.answerObj));
+	
     $scope.Poll.answers = $scope.answerObj;
+	alert(JSON.stringify($scope.answers));
+	
     alert(JSON.stringify($scope.Poll));
    
 	$http({
@@ -52,5 +65,6 @@ $scope.CommitPoll = function() {
     }, function errorCallback(response) {
 	alert('failed');
   	});
+	*/
 };
 });

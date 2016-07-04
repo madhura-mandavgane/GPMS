@@ -28,13 +28,6 @@ app.get('/', function(req, res)
 }
 );
 
-/*
-app.post('/groups',         groups.Add);
-app.get ('/groups',         groups.ListAll);
-app.get ('/groups/:id',     groups.List);
-//app.put ('/groups/:id',     groups.Update);
-app.delete('/groups/:id',   groups.Delete);
-*/
 app.post('/polls',              polls.Add);
 app.get ('/polls',              polls.ListAll);
 app.get ('/polls/:id',          polls.List);
@@ -48,5 +41,6 @@ app.post('/groups',             groups.createNewGroup);
 app.post('/group/employees',    groups.getEmployeesForGroup);
 app.post('/groupAvailability',  groups.groupAvailable);
 
-app.get ('/employees',      employees.getAllEmployees);
-app.post('/employee',       employees.getEmployeesById);
+app.get ('/employees',          employees.getAllEmployees);
+app.post('/employee',           employees.getEmployeesById);
+app.post('/employee/login',     employees.login);

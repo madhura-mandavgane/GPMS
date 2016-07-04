@@ -4,7 +4,7 @@ $scope.operation = $stateParams.operation;
 $scope.id        = $stateParams.id;
 
 $scope.ListPolls = function() {
-
+    alert($scope.operation);
     if($scope.operation == 'TakeSurvey')
 	{
 	   $http({

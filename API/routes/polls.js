@@ -5,11 +5,11 @@ var Server = mongo.Server,
       BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-        db = new Db('GroupPollMgmtSystem', server);
+        db = new Db('GPMS', server);
 
 db.open(function(err, db) {
     if(!err) {
-        console.log("Connected to 'GroupPollMgmtSystem' database");
+        console.log("Connected to 'GPMS' database");
         db.collection('polls', {strict:true}, function(err, collection) {
             if (err) {
                 console.log("The 'polls' collection doesn't exist. Creating it with sample data...");
@@ -24,7 +24,7 @@ exports.List = function(req, res) {
     console.log('Retrieving poll: ' + id);
     db.collection('polls', function(err, collection) {
 		var o_id = new mongo.ObjectId(id);
-		collection.find({'_id':o_id}).toArray(function(err, items) {
+		collection.find({_id:o_id}).toArray(function(err, items) {
 		console.log(JSON.stringify(items));
             res.send(JSON.stringify(items));
         });
@@ -36,6 +36,28 @@ exports.ListByEmployee = function(req, res) {
     db.collection('polls', function(err, collection) {
         collection.find({'createdBy':req.params.id}).toArray(function(err, items) {
 		    console.log(JSON.stringify(items));
+			for(var item in items)			  
+			{ 
+			   var today = new Date();
+			   var openingDate = new Date(items[item].openingDate);
+			   var closingDate = new Date(items[item].closingDate);
+
+			   if((closingDate >= today) && (openingDate <= today))
+			   {
+			        console.log("open");
+			        items[item].pollStatus = "Open";
+			   }
+			   else if(today < openingDate)
+			   { 
+			        console.log("Not Opened");
+			        items[item].pollStatus = "Not Opened";
+			   }
+			   else
+			   {
+			        console.log("Closed");
+			        items[item].pollStatus = "Closed";
+			   }
+			}
             res.send(items);
         });
     });
@@ -54,12 +76,38 @@ exports.ListOpenPollsForUser = function(req, res) {
     console.log('Listing all polls');
     db.collection('polls', function(err, collection) {
 	var today = new Date().toISOString();
-	var date = new Date(today);
+	//var today = new Date();
 	console.log(today);
-    collection.find(
-		       { //"closingDate":{ $gte: date }, "openingDate":{ $lte: date }
-			     "closingDate":{ $gte:date } 
-			   }).toArray(function(err, items) {
+    collection.find( { $or: [
+	                          { $and: [ { 'closingDate':{ $gte: new Date(today) } }, 
+	                                    { 'openingDate':{ $lte: new Date(today) } }
+							          ]
+							  },
+							  { $and: [ { 'closingDate':{ $lt: new Date(today) } },
+	                                    { 'isResultVisibleToParticipants': 'true' }
+							          ]
+							  }
+							]
+					 } ).toArray(function(err, items) {
+			console.log(JSON.stringify(items));
+			for(var item in items)			  
+			{
+			  var date = new Date();
+			  var oDate = new Date(items[item].openingDate);
+			  var cDate = new Date(items[item].closingDate);
+			  
+			  if((cDate >= date) && (oDate <= date))
+			     {
+			        console.log("open");
+			        items[item].pollStatus = "Open";
+			     }
+		      else
+			     {
+                   console.log("closed");				 
+			       items[item].pollStatus = "Closed";
+				 }
+			}		
+	         //collection.find( {'closingDate':{ $gte: new Date(today) } } ).toArray(function(err, items) {
             res.send(items);
         });
     });
@@ -91,7 +139,8 @@ exports.Update = function(req, res) {
     console.log('Updating poll: ' + id);
     console.log(JSON.stringify(poll));
     db.collection('polls', function(err, collection) {
-        collection.update({'id':id}, poll, {safe:true}, function(err, result) {
+	var o_id = new mongo.ObjectId(id);
+        collection.update({'id':o_id}, poll, {safe:true}, function(err, result) {
             if (err) {
                 console.log('Error updating poll: ' + err);
                 res.send({'error':'An error has occurred'});
@@ -108,7 +157,8 @@ exports.Delete = function(req, res) {
     console.log('Deleting poll: ' + id);
     db.collection('polls', function(err, collection) {
         console.log(collection);
-        db.collection.remove({'_id':new ObjectId(id)}, function(err, result) {
+		var o_id = new mongo.ObjectId(id);
+        db.collection.remove({'_id':o_id}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred - ' + err});
             } else {
@@ -162,6 +212,9 @@ var populateDB = function() {
 	var openingdt2  = backDate(creationdt, 3);
 	var closingdt2  = backDate(creationdt, 2);
     var creationdt2 = backDate(creationdt, 4); 
+	
+	var openingdt3 = addDays(creationdt, 1);
+	var closingdt3 = addDays(creationdt, 2);
    
     var polls = [
     {
@@ -170,7 +223,7 @@ var populateDB = function() {
 		creationDate: creationdt, 
 		openingDate: openingdt1,
 		closingDate: closingdt1,
-        pollStatus:"open",   
+        pollStatus:"",   
 		question: "What is the capital of India ?",
 		answers: [
 		{ 
@@ -214,7 +267,7 @@ var populateDB = function() {
 		creationDate: creationdt2, 
 		openingDate: openingdt2,
 		closingDate: closingdt2,
-                pollStatus:"",   
+        pollStatus:"",   
 		question: "Where should we go for trip on this Sunday ?",
 		answers: [
 		{ 
@@ -251,10 +304,43 @@ var populateDB = function() {
 		    groupId: "1001"
 		}
 		]
+	},
+	{
+		description:"Selfie Shot Question - General knowledge",
+		createdBy: "8073",
+		creationDate: creationdt, 
+		openingDate: openingdt3,
+		closingDate: closingdt3,
+        pollStatus:"",   
+		question: "What is the currency of US ?",
+		answers: [
+		{ 
+                   "ans":"Rupee",
+				   "optionNo" : "1",
+                   "correct":"false",
+                   "answeredCount":"1" 
+	        },
+		{ 
+		   "ans":"Dollar",
+		   "optionNo" : "2",
+           "correct":"true",
+           "answeredCount":"2"
+	        }
+	    ],                
+		isResultVisibleToParticipants: "true",                
+		ParticipantGroups : [
+		{
+		    groupId: "1000"
+		},
+		{
+		    groupId: "1001"
+		}
+		]
 	}
 	];
 
+	console.log(polls);
     db.collection('polls', function(err, collection) {
-        collection.insert(polls, function(err, result) {});
+        collection.insert(polls, {safe:true}, function(err, result) {});
     });
 }

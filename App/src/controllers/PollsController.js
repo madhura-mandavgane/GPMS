@@ -27,19 +27,29 @@ if($stateParams.id){
            method: 'GET',
            url: 'http://localhost:9095/polls/' + $stateParams.id
          }).then(function successCallback(response) {
-		 alert('again success');
-		 $scope.list=response.data;
-		 alert($scope.list);
-		 alert($scope.list.description);
-		 //$scope.Description = $scope.list.description;
-		 $scope.Description = "cccc";
-		 $scope.CorrectOption = $scope.list.correctOption;
-		 $scope.StartDate = new Date($scope.list.openingDate);
-		 $scope.EndDate = new Date($scope.list.closingDate);
-		 $scope.isResultVisibleToParticipants = $scope.list.isResultVisibleToParticipants;
-		 $scope.pollStatus = $scope.list.pollStatus;
-                 $scope.ParticipatingGroups = $scope.list.ParticipantGroups;
-		 alert(JSON.stringify(response.data));
+
+                 $scope.PollsList   =response.data;
+		 $scope.Description = $scope.PollsList[0]["description"];
+		 $scope.Question    = $scope.PollsList[0]["question"];		 
+		 $scope.answers     = $scope.PollsList[0]["answers"];
+
+                 $scope.StartDate   = new Date($scope.PollsList[0]["openingDate"]);
+		 $scope.EndDate     = new Date($scope.PollsList[0]["closingDate"]);
+
+                 $scope.isResultVisibleToParticipants = $scope.PollsList[0]["isResultVisibleToParticipants"];
+
+                 $scope.pollStatus = $scope.PollsList[0]["pollStatus"];
+                 $scope.ParticipatingGroups = $scope.PollsList[0]["ParticipantGroups"];
+
+                 $scope.Poll = $scope.PollsList[0];   
+		 for(var i=0; i<$scope.answers.length; i++)
+		 {
+                    $scope.answerObj.push({ans:$scope.answers[i].ans,
+                    			   optionNo:$scope.answers[i].optionNo,
+  					   correct:$scope.answers[i].correct,
+				   answeredCount:$scope.answers[i].answeredCount});		 
+ 		 }
+		
 		 $stateParams.id = 0;
     }, function errorCallback(response) {
 	alert('failed');

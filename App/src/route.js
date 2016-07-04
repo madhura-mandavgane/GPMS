@@ -41,7 +41,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state('master.editpoll', {
             url: '/poll/{id}',
-            templateUrl: 'views/CreatePoll.html', controller : 'PollsController'
+            templateUrl: 'views/EditPoll.html', controller : 'EditPollController'
         });
 		
 	$stateProvider
@@ -67,7 +67,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 app.run(['$rootScope', '$state',function($rootScope, $state){
 
   $rootScope.$on('$stateChangeStart',function(a,b,c,d,e){
-      $rootScope.currentState = b.name;
+      $rootScope.currentState = b.eid;
  });
 
 }]);

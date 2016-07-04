@@ -27,8 +27,12 @@
                             <td style="width:25%;">{{poll.openingDate}}</td>
                             <td style="width:25%;">{{poll.closingDate}}</td>
 			    <td style="width:10%;text-align:center;">
+				                <div ng-if="poll.pollStatus == 'Not Opened'">
                                 <a ui-sref="master.editpoll({operation:'edit',id:poll._id})">Edit</a>
+								</div>
+								<div ng-if="poll.pollStatus == 'Closed' || poll.pollStatus == 'Not Opened'">
                                 <a ng-click="DeletePoll(poll)" class="delete">Delete</a>
+								</div>
 			    </td>  
 			</tr>
 						

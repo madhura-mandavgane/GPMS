@@ -1,30 +1,18 @@
-
-<div ng-app="MyApp" ng-controller="PollsController">
-<form>
-<table id="tblPoll" cellpadding="10" cellspacing="10" ng-init="List()">
- <tr>
-     <td><label for="PollID">Poll ID</label></td>
-     <td><input type="text" readonly="readonly" ng-model="PollID"></input></td>
-  </tr> 
+<div class="wrapper">
+ <div ng-app="MyApp" ng-controller="EditPollController">
+ <div class="table-responsive">
+<table id="tblPoll" cellpadding="10" cellspacing="10" class="table table-striped table-bordered">
   <tr>
      <td><label for="Description">Description</label></td>
-     <td><textarea ng-model="Description" rows="2" cols="50" tabindex="4" readonly="readonly"></input></td>
- </tr> 
+     <td><textarea ng-model="Description" rows="2" cols="50" tabindex="4"></textarea></td>
+  </tr> 
   <tr>
      <td><label for="Question">Question</label></td>
-     <td><textarea ng-model="Question" rows="5" cols="50" tabindex="4" readonly="readonly"></textarea></td>
+     <td><textarea ng-model="Question" rows="5" cols="50" tabindex="4"></textarea></td>
   </tr> 
- 
-  <tr>
-     <td><label for="CorrectOption">Correct Option</label></td>
-     <td><input type="text" ng-model="CorrectOption" readonly="readonly"></input></td>
+  <tr ng-repeat="a in answerObj">
+     <td><input type="checkbox" checklist-model="answers" checklist-value="a"> {{a.ans}}</td>
   </tr>
-  <!--
-  <tr>
-     <td><label for="ParticipatingGroups">Select Group</label></td>
-  	 <td><select ng-model="ParticipatingGroups" ng-init="ListGroupByID()" ng-options="x.name for x in list"  ng-options="x.name for x in list.ParticipatingGroups"></select></td>
-  </tr>
-  -->
   <tr>
      <td><label for="StartDate">Start Date</label></td>
      <td><input type="date" ng-model="StartDate"></td>
@@ -38,15 +26,10 @@
   <tr> 
      <td><label for="Visibility">Visibility</label></td>
      <td>
-         <input type="radio" ng-model="visibility" ng-value="Public">Public
-         <input type="radio" ng-model="visibility" ng-value="GroupAdmin">GroupAdmin
+         <input type="radio" ng-model="isResultVisibleToParticipants" ng-value="Public">Public
+         <input type="radio" ng-model="isResultVisibleToParticipants" ng-value="GroupAdmin">GroupAdmin
      </td> 
-  </tr>
- </table>
-
- <input type="submit" value="Update Poll" ng-click="UpdatePoll()"/>
-</form>
-</div>
-
-</body>
-</html>
+  </tr>	 
+</table>
+<input type="submit" value="Update Poll" ng-click="UpdatePoll()"/>
+</div></div></div>

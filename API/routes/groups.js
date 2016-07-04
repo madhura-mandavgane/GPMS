@@ -5,7 +5,7 @@ var Server = mongo.Server,
       BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-        db = new Db('GroupPollMgmtSystem', server);
+        db = new Db('GPMS', server);
 
 /*
 app.get ('/groups/default', groups.ListDefault);
@@ -22,7 +22,7 @@ db.open(function(err, db) {
                 //populateDB();
             }
     else {
-        console.log("Connected to 'GroupPollMgmtSystem' database");
+        console.log("Connected to 'GPMS' database");
         db.collection('groups', {strict:true}, function(err, collection) {   
         });
     }
@@ -51,8 +51,8 @@ var data = { employeeID : req.body.eid, groupName : req.body.groupName, listEmpl
 	id_array = [];
 	for(var i in list)
 	{
-		//var o_id = new mongo.ObjectId(list[i]);
-		id_array.push({ member_id : new ObjectID(list[i])});
+		var o_id = new mongo.ObjectId(list[i]);
+		id_array.push({ member_id : o_id});
 	}
 	
 	//var groups = connection.collection("groups");
@@ -135,8 +135,8 @@ exports.getEmployeesForGroup=function(req,res){
 		id_array = [];
 		for(var i in list)
 		{
-		    //var o_id = new mongo.ObjectId(list[i]);
-			id_array.push({ _id : new ObjectID(list[i].member)});
+		    var o_id = new mongo.ObjectId(list[i].member);
+			id_array.push({ _id : o_id});
 		}
 		
 		collection.find({$or : id_array }).toArray(function(err , data){
