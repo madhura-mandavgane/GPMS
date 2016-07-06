@@ -1,5 +1,4 @@
 app.config(function($stateProvider, $urlRouterProvider) {
-    
     $urlRouterProvider.otherwise('/login');
     $stateProvider
 		.state('login', {
@@ -64,10 +63,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
         });	
 });
 
-app.run(['$rootScope', '$state',function($rootScope, $state){
-
-  $rootScope.$on('$stateChangeStart',function(a,b,c,d,e){
-      $rootScope.currentState = b.eid;
+app.run(function($rootScope, $location, $state){
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+                  
+  				  alert(toState.url);
+				  alert(toParams.Id);
+				  
+                  if ($rootScope.loggedin)
+				  {
+                     alert('logged in');
+					 $location.path(toState.url);
+				  }
+				  else
+				  {
+				     alert('not logged in');
+					 $location.path(toState.url);
+				  }
+              });
  });
-
-}]);

@@ -1,9 +1,10 @@
-app.controller('EditPollController', function($scope, $location, $http, $filter, apiService, $stateParams) {
+app.controller('EditPollController', function($scope, $location, $http, $filter, apiService, $stateParams, $rootScope) {
 //$stateParams.id
 $scope.answers = [];
 $scope.answersCount = [];
 $scope.correctAnswer = [];
 
+alert("rootscope=" + JSON.stringify($rootScope.employee));
 
 $scope.totalAnswerChanged = function(){
 	var count = parseInt($scope.TotalAnswers);

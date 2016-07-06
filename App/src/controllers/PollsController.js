@@ -1,8 +1,10 @@
-app.controller('PollsController', function($scope, $location, $http, $filter, apiService, $stateParams) {
+app.controller('PollsController', function($scope, $location, $http, $filter, apiService, $stateParams, $rootScope) {
 //$stateParams.id
 $scope.answers = [];
 $scope.answersCount = [];
 $scope.correctAnswer = [];
+
+alert("rootscope=" + JSON.stringify($rootScope.employee));
 
 $scope.go = function (hash, id) { 
 //alert('id=' + id);

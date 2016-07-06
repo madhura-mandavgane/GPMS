@@ -1,7 +1,8 @@
-app.controller('OpenPollsController', function($scope, $location, $http, $filter, apiService, $stateParams) {
+app.controller('OpenPollsController', function($scope, $location, $http, $filter, apiService, $stateParams, $rootScope) {
 
 $scope.operation = $stateParams.operation;
 $scope.id        = $stateParams.id;
+alert("rootscope=" + JSON.stringify($rootScope.employee));
 
 $scope.ListPolls = function() {
     alert($scope.operation);

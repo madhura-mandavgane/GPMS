@@ -1,7 +1,9 @@
-app.controller('CommitPollsController', function($scope, $location, $http, $filter, apiService, $stateParams) {
+app.controller('CommitPollsController', function($scope, $location, $http, $filter, apiService, $stateParams, $rootScope) {
 $scope.answers=[];
 $scope.answerObj = [];
 $scope.Poll={};
+
+alert("rootscope=" + JSON.stringify($rootScope.employee));
 
 if($stateParams.id){
 	$http({

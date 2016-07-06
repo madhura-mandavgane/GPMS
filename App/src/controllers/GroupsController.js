@@ -1,4 +1,4 @@
-app.controller('GroupsController', function($scope,$http,$state,apiService) {
+app.controller('GroupsController', function($scope,$http,$state,apiService, $rootScope) {
 
 var serverData = [];
 var empData = [];

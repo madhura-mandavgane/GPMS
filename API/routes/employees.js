@@ -5,7 +5,7 @@ var Server = mongo.Server,
       BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-        db = new Db('GPMS', server);
+        db = new Db('GPMS1', server);
 
 db.open(function(err, db) {
     if(!err) {
@@ -22,10 +22,9 @@ exports.login = function(req,res) {
 		console.log('login request : ' + JSON.stringify(req.body));
 		var data = { username : req.body.username, password : req.body.password };
 		
-		var employees = connection.collection("employees");
-		
-		employees.findOne( { $and : [{ username : data.username } , {password : data.password} ] }, function(err , doc){
-				res.setHeader('Content-Type', 'application/json');
+		db.collection('employees', function(err, collection) {
+		collection.findOne( { $and : [{ username : data.username } , {password : data.password} ] }, function(err , user){
+			/*	res.setHeader('Content-Type', 'application/json');
 				//assert.equal(err,null);
 				if(doc == null){
 					res.setErr
@@ -39,8 +38,16 @@ exports.login = function(req,res) {
 					res.json(doc);
 					res.end();
 				}
-				
+			*/
+            if (err) {
+                console.log('Cannot authenticate: ' + err);
+                res.send({'error':'An error has occurred'});
+            } else {
+                console.log(result + ' document(s) updated');
+                res.send(user);
+            }			
 		});
+    });
 }
 
 

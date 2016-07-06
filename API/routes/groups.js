@@ -5,7 +5,7 @@ var Server = mongo.Server,
       BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-        db = new Db('GPMS', server);
+        db = new Db('GPMS1', server);
 
 /*
 app.get ('/groups/default', groups.ListDefault);

@@ -5,15 +5,15 @@ var Server = mongo.Server,
       BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-        db = new Db('GPMS', server);
+        db = new Db('GPMS1', server);
 
 db.open(function(err, db) {
     if(!err) {
         console.log("Connected to 'GPMS' database");
-        db.collection('polls', {strict:true}, function(err, collection) {
+        db.collection('polls1', {strict:true}, function(err, collection) {
             if (err) {
                 console.log("The 'polls' collection doesn't exist. Creating it with sample data...");
-                populateDB();
+				populateDB();
             }
         });
     }
@@ -22,7 +22,7 @@ db.open(function(err, db) {
 exports.List = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving poll: ' + id);
-    db.collection('polls', function(err, collection) {
+    db.collection('polls1', function(err, collection) {
 		var o_id = new mongo.ObjectId(id);
 		collection.find({_id:o_id}).toArray(function(err, items) {
 		console.log(JSON.stringify(items));
@@ -32,8 +32,8 @@ exports.List = function(req, res) {
 };	
 
 exports.ListByEmployee = function(req, res) {
-    console.log('Listing all polls created by Employee:' + req.params.id);
-    db.collection('polls', function(err, collection) {
+    console.log('Listing all polls1 created by Employee:' + req.params.id);
+    db.collection('polls1', function(err, collection) {
         collection.find({'createdBy':req.params.id}).toArray(function(err, items) {
 		    console.log(JSON.stringify(items));
 			for(var item in items)			  
@@ -45,7 +45,7 @@ exports.ListByEmployee = function(req, res) {
 			   if((closingDate >= today) && (openingDate <= today))
 			   {
 			        console.log("open");
-			        items[item].pollStatus = "Open";
+			        items[item].pollstatus = "Open";
 			   }
 			   else if(today < openingDate)
 			   { 
@@ -65,7 +65,7 @@ exports.ListByEmployee = function(req, res) {
 
 exports.ListAll = function(req, res) {
     console.log('Listing all polls');
-    db.collection('polls', function(err, collection) {
+    db.collection('polls1', function(err, collection) {
         collection.find().toArray(function(err, items) {
             res.send(items);
         });
@@ -74,7 +74,7 @@ exports.ListAll = function(req, res) {
 
 exports.ListOpenPollsForUser = function(req, res) {
     console.log('Listing all polls');
-    db.collection('polls', function(err, collection) {
+    db.collection('polls1', function(err, collection) {
 	var today = new Date().toISOString();
 	//var today = new Date();
 	console.log(today);
@@ -119,7 +119,7 @@ exports.Add = function(req, res) {
 	var poll = JSON.parse(JSON.stringify(req.body));
     console.log('Adding poll: ' + JSON.stringify(poll));
 
-    db.collection('polls', function(err, collection) {
+    db.collection('polls1', function(err, collection) {
         collection.insert(poll, {safe:true}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred'});
@@ -138,7 +138,7 @@ exports.Update = function(req, res) {
     var poll = req.body;
     console.log('Updating poll: ' + id);
     console.log(JSON.stringify(poll));
-    db.collection('polls', function(err, collection) {
+    db.collection('polls1', function(err, collection) {
 	var o_id = new mongo.ObjectId(id);
         collection.update({'id':o_id}, poll, {safe:true}, function(err, result) {
             if (err) {
@@ -155,7 +155,7 @@ exports.Update = function(req, res) {
 exports.Delete = function(req, res) {
     var id = req.params.id;
     console.log('Deleting poll: ' + id);
-    db.collection('polls', function(err, collection) {
+    db.collection('polls1', function(err, collection) {
         console.log(collection);
 		var o_id = new mongo.ObjectId(id);
         db.collection.remove({'_id':o_id}, function(err, result) {
@@ -175,7 +175,7 @@ exports.Commit = function(req, res) {
 	var poll = JSON.parse(JSON.stringify(req.body));
     console.log('Commiting poll: ' + JSON.stringify(poll));
 
-    db.collection('polls', function(err, collection) {
+    db.collection('polls1', function(err, collection) {
         collection.insert(poll, {safe:true}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred'});
@@ -219,7 +219,7 @@ var populateDB = function() {
     var polls = [
     {
 		description:"Selfie Shot Question",
-		createdBy: "8073",
+		createdBy: "577b8d92bc1283884fcd2573",
 		creationDate: creationdt, 
 		openingDate: openingdt1,
 		closingDate: closingdt1,
@@ -263,7 +263,7 @@ var populateDB = function() {
 	},
 	{
 		description:"Trip Planning",
-		createdBy: "8073",
+		createdBy: "577b8d92bc1283884fcd2573",
 		creationDate: creationdt2, 
 		openingDate: openingdt2,
 		closingDate: closingdt2,
@@ -307,7 +307,7 @@ var populateDB = function() {
 	},
 	{
 		description:"Selfie Shot Question - General knowledge",
-		createdBy: "8073",
+		createdBy: "577b8d92bc1283884fcd2573",
 		creationDate: creationdt, 
 		openingDate: openingdt3,
 		closingDate: closingdt3,
@@ -340,7 +340,12 @@ var populateDB = function() {
 	];
 
 	console.log(polls);
-    db.collection('polls', function(err, collection) {
-        collection.insert(polls, {safe:true}, function(err, result) {});
+    db.collection('polls1', function(err, collection) {
+        collection.insert(polls, {safe:true}, function(err, result) {
+		  if (err) {
+                console.log("Error while inserting records:"+err);
+		  }
+		});
+		
     });
 }
