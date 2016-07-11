@@ -1,0 +1,2 @@
+{"_id":{"$oid":"578199a4535ffc6c1ea931c3"},"groupName":"IBM BU","creationDate":{"$date":"2016-07-10T00:41:08.840Z"},"createdBy":"578196cdd958b1981e859733","members":[{"member_id":{"$oid":"578196cdd958b1981e859733"}}]}
+{"_id":{"$oid":"578199a4535ffc6c1ea931c4"},"groupName":"SV Core","creationDate":{"$date":"2016-07-10T00:41:08.840Z"},"createdBy":"578196cdd958b1981e859733","members":[{"member_id":{"$oid":"578196cdd958b1981e859734"}}]}
