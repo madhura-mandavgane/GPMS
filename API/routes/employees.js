@@ -5,14 +5,15 @@ var Server = mongo.Server,
       BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-        db = new Db('GPMS1', server);
+        db = new Db('GroupPollManagementSystem', server);
 
 db.open(function(err, db) {
     if(!err) {
-        console.log("Connected to 'GPMS' database");
+        console.log("Connected to 'GroupPollManagementSystem' database");
         db.collection('employees', {strict:true}, function(err, collection) {
             if (err) {
-                console.log("The 'employees' collection doesn't exist. Creating it with sample data...");
+                console.log("The 'employees' collection doesn't exist");
+				//populateDB();
             }
         });
     }
@@ -43,7 +44,7 @@ exports.login = function(req,res) {
                 console.log('Cannot authenticate: ' + err);
                 res.send({'error':'An error has occurred'});
             } else {
-                console.log(result + ' document(s) updated');
+                console.log('document(s) updated');
                 res.send(user);
             }			
 		});
@@ -84,4 +85,34 @@ exports.getAllEmployees = function(req,res){
 		res.send(JSON.stringify(docs));
 	});
   });
+}
+
+var populateDB = function() {
+      
+    var employees = [
+    {
+	  "first_name" : "Nikhil", 
+	  "last_name" : "Marurkar", 
+	  "username" : "nikhil", 
+	  "password" : "nikhil" 
+	},
+    {
+	  "first_name" : "Madhura", 
+	  "last_name" : "M", 
+	  "username" : "m", 
+	  "password" : "m" 
+	}
+	];
+    
+	console.log(employees);
+    db.collection('employees', function(err, collection) {
+        collection.insertMany(employees, {safe:true}, function(err, result) {
+		  if (err) {
+                console.log("Error while inserting records:\n"+err+"\n result:"+result);
+		  }
+		});
+		if (err) {
+                console.log("Error while inserting records:\n"+err);
+		}
+    });
 }

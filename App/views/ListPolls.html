@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <legend>List of Polls<span class="add"><a ui-sref="master.operationGroup({operation:'add'})">Create new Poll</a></span></legend>
+    <legend>List of Polls<span class="add"><a ui-sref="master.createpoll">Create new Poll</a></span></legend>
     <div class="table-responsive">
 	
 	    <table id="EmployeeEntry" class="table table-striped table-bordered">
@@ -31,7 +31,7 @@
                                 <a ui-sref="master.editpoll({operation:'edit',id:poll._id})">Edit</a>
 								</div>
 								<div ng-if="poll.pollStatus == 'Closed' || poll.pollStatus == 'Not Opened'">
-                                <a ng-click="DeletePoll(poll)" class="delete">Delete</a>
+                                <a ng-click="DeletePoll(poll._id)" class="delete">Delete</a>
 								</div>
 			    </td>  
 			</tr>

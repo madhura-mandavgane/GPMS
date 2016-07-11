@@ -5,15 +5,15 @@ var Server = mongo.Server,
       BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-        db = new Db('GPMS1', server);
+        db = new Db('GroupPollManagementSystem', server);
 
 db.open(function(err, db) {
     if(!err) {
-        console.log("Connected to 'GPMS' database");
-        db.collection('polls1', {strict:true}, function(err, collection) {
+        console.log("Connected to 'GroupPollManagementSystem' database");
+        db.collection('polls', {strict:true}, function(err, collection) {
             if (err) {
-                console.log("The 'polls' collection doesn't exist. Creating it with sample data...");
-				populateDB();
+                console.log("The 'polls' collection doesn't exist");
+				//populateDB();
             }
         });
     }
@@ -22,7 +22,7 @@ db.open(function(err, db) {
 exports.List = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving poll: ' + id);
-    db.collection('polls1', function(err, collection) {
+    db.collection('polls', function(err, collection) {
 		var o_id = new mongo.ObjectId(id);
 		collection.find({_id:o_id}).toArray(function(err, items) {
 		console.log(JSON.stringify(items));
@@ -31,9 +31,22 @@ exports.List = function(req, res) {
     });
 };	
 
+
+var addDays = function(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
+var backDate = function(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+}
+
 exports.ListByEmployee = function(req, res) {
-    console.log('Listing all polls1 created by Employee:' + req.params.id);
-    db.collection('polls1', function(err, collection) {
+    console.log('Listing all polls created by Employee:' + req.params.id);
+    db.collection('polls', function(err, collection) {
         collection.find({'createdBy':req.params.id}).toArray(function(err, items) {
 		    console.log(JSON.stringify(items));
 			for(var item in items)			  
@@ -41,11 +54,11 @@ exports.ListByEmployee = function(req, res) {
 			   var today = new Date();
 			   var openingDate = new Date(items[item].openingDate);
 			   var closingDate = new Date(items[item].closingDate);
-
+			   
 			   if((closingDate >= today) && (openingDate <= today))
 			   {
 			        console.log("open");
-			        items[item].pollstatus = "Open";
+			        items[item].pollStatus = "Open";
 			   }
 			   else if(today < openingDate)
 			   { 
@@ -65,7 +78,7 @@ exports.ListByEmployee = function(req, res) {
 
 exports.ListAll = function(req, res) {
     console.log('Listing all polls');
-    db.collection('polls1', function(err, collection) {
+    db.collection('polls', function(err, collection) {
         collection.find().toArray(function(err, items) {
             res.send(items);
         });
@@ -73,44 +86,62 @@ exports.ListAll = function(req, res) {
 };
 
 exports.ListOpenPollsForUser = function(req, res) {
-    console.log('Listing all polls');
-    db.collection('polls1', function(err, collection) {
-	var today = new Date().toISOString();
-	//var today = new Date();
-	console.log(today);
-    collection.find( { $or: [
-	                          { $and: [ { 'closingDate':{ $gte: new Date(today) } }, 
-	                                    { 'openingDate':{ $lte: new Date(today) } }
-							          ]
-							  },
-							  { $and: [ { 'closingDate':{ $lt: new Date(today) } },
-	                                    { 'isResultVisibleToParticipants': 'true' }
-							          ]
-							  }
-							]
-					 } ).toArray(function(err, items) {
-			console.log(JSON.stringify(items));
-			for(var item in items)			  
+    console.log('Listing all open polls');
+  	var query = req.query;
+	console.log("req.query= " + JSON.stringify(req.query));
+
+	var groupIds = [];
+	for (var grp in req.query)
+    {
+	    groupIds.push(req.query[grp]);
+		console.log(req.query[grp]);
+    }
+	
+
+    db.collection('polls', function(err, collection) {
+	   var today = new Date().toISOString();
+	   console.log(today);
+
+	   var pollsToConsider=[];
+	   collection.find().toArray(function(err, polls) {
+			console.log(JSON.stringify(polls));
+			for(var poll in polls)			  
+			{
+			   var participatingGroups = polls[poll].ParticipantGroups;
+			   console.log("participatingGroups = " + JSON.stringify(polls[poll].ParticipantGroups));
+			   for(var grp in participatingGroups)
+			   {
+			      if(groupIds.indexOf(participatingGroups[grp].groupId) != -1)
+				  {	
+				     pollsToConsider.push(polls[poll]);
+					 break;
+				  }
+			   }
+			}
+			console.log("pollsToConsider = " + JSON.stringify(pollsToConsider));
+			for(var i = 0; i<pollsToConsider.length; i++)			  
 			{
 			  var date = new Date();
-			  var oDate = new Date(items[item].openingDate);
-			  var cDate = new Date(items[item].closingDate);
+			  var oDate = new Date(pollsToConsider[i]["openingDate"]);
+			  console.log("odate = " + oDate); 
+			  var cDate = new Date(pollsToConsider[i]["closingDate"]);
+			  console.log("cdate = " + cDate); 
 			  
 			  if((cDate >= date) && (oDate <= date))
 			     {
 			        console.log("open");
-			        items[item].pollStatus = "Open";
+			        pollsToConsider[i]["pollStatus"] = "Open";
 			     }
 		      else
 			     {
                    console.log("closed");				 
-			       items[item].pollStatus = "Closed";
+			       pollsToConsider[i]["pollStatus"] = "Closed";
 				 }
-			}		
-	         //collection.find( {'closingDate':{ $gte: new Date(today) } } ).toArray(function(err, items) {
-            res.send(items);
-        });
-    });
+			}				
+	        console.log("Final = "  + JSON.stringify(pollsToConsider));
+	        res.send(pollsToConsider);
+        });	 
+	 });
 };
 
 exports.Add = function(req, res) {
@@ -119,7 +150,7 @@ exports.Add = function(req, res) {
 	var poll = JSON.parse(JSON.stringify(req.body));
     console.log('Adding poll: ' + JSON.stringify(poll));
 
-    db.collection('polls1', function(err, collection) {
+    db.collection('polls', function(err, collection) {
         collection.insert(poll, {safe:true}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred'});
@@ -133,19 +164,40 @@ exports.Add = function(req, res) {
 );
 }
 
-exports.Update = function(req, res) {
+exports.UpdateAnswer = function(req, res) {
     var id = req.params.id;
     var poll = req.body;
     console.log('Updating poll: ' + id);
-    console.log(JSON.stringify(poll));
-    db.collection('polls1', function(err, collection) {
+
+    db.collection('polls', function(err, collection) {
 	var o_id = new mongo.ObjectId(id);
-        collection.update({'id':o_id}, poll, {safe:true}, function(err, result) {
+   
+	collection.update({_id:o_id}, { $set: {"answers": JSON.stringify(poll.answers)} }, function(err, result) {
             if (err) {
                 console.log('Error updating poll: ' + err);
                 res.send({'error':'An error has occurred'});
             } else {
-                console.log('' + result + ' document(s) updated');
+                console.log('\n'+ result + ' document(s) updated');
+                res.send(poll);
+            }
+        });
+    });
+}
+
+exports.Update = function(req, res) {
+    var id = req.params.id;
+    var poll = req.body;
+    console.log('Updating poll: ' + id);
+
+    db.collection('polls', function(err, collection) {
+	var o_id = new mongo.ObjectId(id);
+   
+	collection.update({_id:o_id}, function(err, result) {
+            if (err) {
+                console.log('Error updating poll: ' + err);
+                res.send({'error':'An error has occurred'});
+            } else {
+                console.log('\n'+ result + ' document(s) updated');
                 res.send(poll);
             }
         });
@@ -155,10 +207,9 @@ exports.Update = function(req, res) {
 exports.Delete = function(req, res) {
     var id = req.params.id;
     console.log('Deleting poll: ' + id);
-    db.collection('polls1', function(err, collection) {
-        console.log(collection);
+    db.collection('polls', function(err, collection) {
 		var o_id = new mongo.ObjectId(id);
-        db.collection.remove({'_id':o_id}, function(err, result) {
+        collection.remove({'_id':o_id}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred - ' + err});
             } else {
@@ -175,7 +226,7 @@ exports.Commit = function(req, res) {
 	var poll = JSON.parse(JSON.stringify(req.body));
     console.log('Commiting poll: ' + JSON.stringify(poll));
 
-    db.collection('polls1', function(err, collection) {
+    db.collection('polls', function(err, collection) {
         collection.insert(poll, {safe:true}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred'});
@@ -187,18 +238,6 @@ exports.Commit = function(req, res) {
     }
 	
 );
-}
-
-var addDays = function(date, days) {
-    var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-}
-
-var backDate = function(date, days) {
-    var result = new Date(date);
-    result.setDate(result.getDate() - days);
-    return result;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -219,12 +258,12 @@ var populateDB = function() {
     var polls = [
     {
 		description:"Selfie Shot Question",
-		createdBy: "577b8d92bc1283884fcd2573",
+		createdBy: "578196cdd958b1981e859734",
 		creationDate: creationdt, 
 		openingDate: openingdt1,
 		closingDate: closingdt1,
         pollStatus:"",   
-		question: "What is the capital of India ?",
+		question: "What is the capitalof India ?",
 		answers: [
 		{ 
                    "ans":"Mumbai",
@@ -254,16 +293,16 @@ var populateDB = function() {
 		isResultVisibleToParticipants: "true",                
 		ParticipantGroups : [
 		{
-		    groupId: "1000"
+		    groupId: "578199a4535ffc6c1ea931c3"
 		},
 		{
-		    groupId: "1001"
+		    groupId: "578199a4535ffc6c1ea931c4"
 		}
 		]
 	},
 	{
 		description:"Trip Planning",
-		createdBy: "577b8d92bc1283884fcd2573",
+		createdBy: "578196cdd958b1981e859734",
 		creationDate: creationdt2, 
 		openingDate: openingdt2,
 		closingDate: closingdt2,
@@ -298,16 +337,16 @@ var populateDB = function() {
 		isResultVisibleToParticipants: "true",
 		ParticipantGroups : [
 		{
-		    groupId: "1000"
+		    groupId: "578199a4535ffc6c1ea931c4"
 		},
 		{
-		    groupId: "1001"
+		    groupId: "578199a4535ffc6c1ea931c3"
 		}
 		]
 	},
 	{
 		description:"Selfie Shot Question - General knowledge",
-		createdBy: "577b8d92bc1283884fcd2573",
+		createdBy: "578196cdd958b1981e859734",
 		creationDate: creationdt, 
 		openingDate: openingdt3,
 		closingDate: closingdt3,
@@ -330,22 +369,24 @@ var populateDB = function() {
 		isResultVisibleToParticipants: "true",                
 		ParticipantGroups : [
 		{
-		    groupId: "1000"
+		    groupId: "578199a4535ffc6c1ea931c4"
 		},
 		{
-		    groupId: "1001"
+		    groupId: "578199a4535ffc6c1ea931c3"
 		}
 		]
 	}
 	];
 
 	console.log(polls);
-    db.collection('polls1', function(err, collection) {
-        collection.insert(polls, {safe:true}, function(err, result) {
+    db.collection('polls', function(err, collection) {
+        collection.insertMany(polls, {safe:true}, function(err, result) {
 		  if (err) {
-                console.log("Error while inserting records:"+err);
+                console.log("Error while inserting records:\n"+err+"\n result:"+result);
 		  }
 		});
-		
+		if (err) {
+                console.log("Error while inserting records2:\n"+err);
+		}
     });
 }

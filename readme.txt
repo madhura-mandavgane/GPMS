@@ -1,2 +1,9 @@
-db.employees.insert({"eid" : 2, "first_name" : "Nikhil", "last_name" : "Marurkar", "username" : "nikhilmarurkar", "password" : "nikhilmarurkar" });
-db.groups.insert({"groupName" : "IBM BU", "eid" : "575bbc3992590d0114f5fe95", "members" : [ { "member_id" : ObjectId("5767c099aa15c8723cd8d64c")}]});
+1. Create a DB from mongo client
+   
+   use GroupPollManagementSystem;
+
+2. Import the json files (committed into git) into the above db
+
+   mongoimport --db GroupPollManagementSystem --collection employees --file employees.json
+   mongoimport --db GroupPollManagementSystem --collection groups --file groups.json
+   mongoimport --db GroupPollManagementSystem --collection polls --file polls.json

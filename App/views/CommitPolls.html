@@ -11,7 +11,7 @@
      <td><label for="Question">Question</label></td>
      <td><textarea ng-model="Question" rows="5" cols="50" tabindex="4"></textarea></td>
   </tr> 
-  <tr ng-repeat="a in answerObj">
+  <tr ng-repeat="a in answerObj track by $id($index)">
      <td><input type="checkbox" checklist-model="answers" checklist-value="a.ans"> {{a.ans}}</td>
   </tr>
   <tr>

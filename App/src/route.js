@@ -27,13 +27,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state('master.polls', {
             url: '/polls',
-            templateUrl: 'views/ListPolls.html', controller : 'PollsController'
+            templateUrl: 'views/ListPolls.html', controller : 'ListPollsController'
         });	
 		
 	$stateProvider
 		.state('master.createpoll', {
             url: '/poll',
-            templateUrl: 'views/CreatePoll.html', controller : 'PollsController'
+            templateUrl: 'views/CreatePoll.html', controller : 'CreatePollController'
         });
 	
 	
@@ -46,19 +46,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state('master.openpolls', {
             url: '/open/polls',
-			params: { id:null, operation:null},
             templateUrl: 'views/OpenPolls.html', controller : 'OpenPollsController'
         });
 		
 	$stateProvider
 		.state('master.answerpoll', {
-            url: '/answer/poll/{id}',
+            url: "/answer/poll/:id",
             templateUrl: 'views/CommitPolls.html', controller : 'CommitPollsController'
         });
 		
     $stateProvider
 		.state('master.viewpollresult', {
-            url: '/result/poll/{id}',
+            url: '/result/poll/:id',
             templateUrl: 'views/PollResult.html', controller : 'PollResultController'
         });	
 });

@@ -5,25 +5,16 @@ var Server = mongo.Server,
       BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-        db = new Db('GPMS1', server);
+        db = new Db('GroupPollManagementSystem', server);
 
-/*
-app.get ('/groups/default', groups.ListDefault);
-app.post('/groups',         groups.Add);
-app.get ('/groups',         groups.ListAll);
-app.get ('/groups/:id',     groups.List);
-//app.put ('/groups/:id',     groups.Update);
-app.delete('/groups/:id',   groups.Delete);
-*/		
-		
 db.open(function(err, db) {
-	if (err) {
-                console.log("The 'groups' collection doesn't exist....");
-                //populateDB();
+    if(!err) {
+        console.log("Connected to 'GroupPollManagementSystem' database");
+        db.collection('groups', {strict:true}, function(err, collection) {
+            if (err) {
+                console.log("The 'groups' collection doesn't exist");
+				//populateDB();
             }
-    else {
-        console.log("Connected to 'GPMS' database");
-        db.collection('groups', {strict:true}, function(err, collection) {   
         });
     }
 });
@@ -129,7 +120,7 @@ exports.getEmployeesForGroup=function(req,res){
 	*/
 
 		
-	list = req.body.ListEmployees
+	list = req.body.ListEmployees;
 		
 	    db.collection('employees', function(err, collection) {
 		id_array = [];
@@ -148,6 +139,21 @@ exports.getEmployeesForGroup=function(req,res){
 	});
 }
 
+exports.GetGroupsOfEmployee = function(req,res){
+	console.log('Get all groups of the employee = ' + req.params.id);
+	var id = req.params.id;
+	
+	db.collection('groups' , function(err, collection) {
+	   //var o_id = new mongo.ObjectId(id)
+	   //collection.find({"members": { "$in": [ mongo.ObjectId(id) ] } }).toArray(function(err, docs) {
+	   collection.find().toArray(function(err, docs) {
+	     console.log("docs = " + JSON.stringify(docs));
+		// for(var )
+	     res.send(docs);       
+	});
+  });
+}
+
 exports.List = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving Group: ' + id);
@@ -164,7 +170,7 @@ exports.ListAll = function(req, res) {
     console.log('Listing all groups');
     db.collection('groups', function(err, collection) {
         collection.find().toArray(function(err, items) {
-			console.log('Sending....');
+			console.log('groups = ' + JSON.stringify(items));
             res.send(items);
         });
     });
@@ -232,42 +238,42 @@ exports.Delete = function(req, res) {
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Populate database with sample data -- Only used once: the first time the application is started.
 // You'd typically not find this code in a real-life app, since the database would already exist.
-/* var populateDB = function() {
+var populateDB = function() {
+    var creationdt = new Date();
+	var o_id1 = new mongo.ObjectId('578196cdd958b1981e859733');
+	var o_id2= new mongo.ObjectId('578196cdd958b1981e859734');
     var groups = [
     {
-        name: "IBM BU",
-		id: "1000",
-		creationDate: "05/22/2016", 
-		createdBy: "8073",
-        employees: [
-		{
-		    id:"1111",
-			name:"XXX"
-		},
-        { 
-		    id:"1222",
-			name:"YYY"
-		}
-      ]
+        groupName: "IBM BU",
+	    creationDate: creationdt, 
+		createdBy: "578196cdd958b1981e859733",
+        members: [
+		  {
+		    member_id:o_id1
+		  }
+        ]
 	},
     {
-        name: "SV Core",
-		id: "1001",
-		creationDate: "05/22/2016", 
-		createdBy: "8073",
-        employees: [
-		{
-		    id:"2111",
-			name:"XXX"
-		},
-		{ 
-		    id:"2222",
-			name:"YYY"
-		}
+        groupName: "SV Core",
+		creationDate: creationdt, 
+		createdBy: "578196cdd958b1981e859733",
+        members: [
+		  {
+		    member_id:o_id2
+		  }
 		]	
     }
 	];
+	
+	console.log(groups);
     db.collection('groups', function(err, collection) {
-        collection.insert(groups, {safe:true}, function(err, result) {});
+        collection.insertMany(groups, {safe:true}, function(err, result) {
+		  if (err) {
+                console.log("Error while inserting records:\n"+err+"\n result:"+result);
+		  }
+		});
+		if (err) {
+                console.log("Error while inserting records:\n"+err);
+		}
     });
-}; */
+};

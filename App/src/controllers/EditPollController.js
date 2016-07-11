@@ -14,10 +14,36 @@ $scope.totalAnswerChanged = function(){
 	}
 }
 
+$scope.UpdatePoll = function() {
+	$http({
+           method: 'PUT',
+		   data: JSON.stringify($scope.Poll),
+           url: 'http://localhost:9095/polls/' + $scope.PollsList[0]["_id"]
+         }).then(function successCallback(response) {
+
+		 $scope.PollsList=response.data;
+    }, function errorCallback(response) {
+	alert('failed');
+  	});
+}
+/*
 apiService.apiCalltoServer('Groups','GET').then(function(response)
 {
     $scope.groupList = response.data;
 });
+*/
+
+$http({
+           method: 'GET',
+           url: 'http://localhost:9095/groups',
+         }).then(function successCallback(response) {
+		 //alert('success');
+		 $scope.groupList=response.data;
+		 //alert("grouplist=" + JSON.stringify($scope.groupList) );
+	     }, function errorCallback(response) {
+	alert('failed');
+  });
+  
 
 	$http({
            method: 'GET',

@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <legend>List of Polls<span class="add"><a ui-sref="master.operationGroup({operation:'add'})">Create new Poll</a></span></legend>
+    <legend>List of Polls<span class="add"><a ui-sref="master.createpoll">Create new Poll</a></span></legend>
     <div class="table-responsive">
  
 	    <table id="EmployeeEntry" class="table table-striped table-bordered">
@@ -26,12 +26,13 @@
                             <td style="width:25%;">{{poll.creationDate}}</td>
                             <td style="width:25%;">{{poll.openingDate}}</td>
                             <td style="width:25%;">{{poll.closingDate}}</td>
+                            <td>{{poll._id}}</td>
 			                <td style="width:10%;text-align:center;">
 							  <div ng-if="poll.pollStatus == 'Open'">
-                                <a ui-sref="master.answerpoll({id:poll._id})">Submit Answer</a>
+                                <a ui-sref="master.answerpoll({ id : poll._id })">Submit Answer</a>
 							  </div>
 							  <div ng-if="poll.pollStatus == 'Closed'">
-								<a ui-sref="master.viewpollresult({id:poll._id})">View Result</a>
+								<a ui-sref="master.viewpollresult({ id : poll._id })">View Result</a>
 							  </div>
 			                </td>  
 			</tr>
