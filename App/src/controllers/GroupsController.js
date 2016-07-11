@@ -44,7 +44,7 @@ apiService.apiCalltoServer('Groups','GET').then(function(response)
 
 async.forEachOf(serverData,function(value,key,callback){
     var data = {
-        "eid":value.eid
+        "createdBy":value.createdBy
     }
     apiService.apiCalltoServer('employee','POST',data).then(function(response)
     {
@@ -67,7 +67,10 @@ async.forEachOf(serverData,function(value,key,callback){
     
 });
 
-
+$scope.editRecord = function()
+{
+	$state.go('master.operationGroup',{operation:'edit'},{reload:true});
+}
 
 $scope.deleteRecord = function(groupId)
 {

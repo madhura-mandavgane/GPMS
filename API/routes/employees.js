@@ -55,10 +55,10 @@ exports.login = function(req,res) {
 //get Employee Objects by their IDs
 exports.getEmployeesById = function(req,res){
 		console.log('start getempID' + JSON.stringify(req.body));
-		data = { eid : req.body.eid };
+		data = {createdBy : req.body.createdBy };
         
 		db.collection('employees', function(err, collection) {
-	    var o_id = new mongo.ObjectId(data.eid);
+	    var o_id = new mongo.ObjectId(data.createdBy);
 		collection.findOne({ _id : o_id}, function(err , doc){
 				res.setHeader('Content-Type', 'application/json');
 				//assert.equal(err,null);

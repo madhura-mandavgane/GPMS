@@ -20,7 +20,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 	$stateProvider
 		.state('master.operationGroup', {
-            url: '/groups/:operation?groupID',
+            url: '/groups/:operation',
             templateUrl: 'views/OperationGroup.html', controller : 'OperationGroupController'
         });
 			
@@ -63,19 +63,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 });
 
 app.run(function($rootScope, $location, $state){
-  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-                  
-  				  alert(toState.url);
-				  alert(toParams.Id);
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams,fromState,fromParams) {
+				$rootScope.currentState = toState.name;
+              
 				  
                   if ($rootScope.loggedin)
-				  {
-                     alert('logged in');
+				  { /* alert('logged in'); */
 					 $location.path(toState.url);
 				  }
 				  else
 				  {
-				     alert('not logged in');
+				     /*alert('not logged in');*/
 					 $location.path(toState.url);
 				  }
               });
