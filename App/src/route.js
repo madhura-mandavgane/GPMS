@@ -20,7 +20,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 	$stateProvider
 		.state('master.operationGroup', {
-            url: '/groups/:operation',
+            url: '/groups/:action',
             templateUrl: 'views/OperationGroup.html', controller : 'OperationGroupController'
         });
 			

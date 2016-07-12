@@ -33,7 +33,7 @@ exports.getAllGroups=function(req,res){
 }
 
 exports.createNewGroup = function(req, res) {
-var data = { employeeID : req.body.eid, groupName : req.body.groupName, listEmployees : req.body.members};
+var data = { employeeID : req.body.createdBy, groupName : req.body.groupName, listEmployees : req.body.members};
 	
 	console.log("creating new group : " + JSON.stringify(req.body));
 	
@@ -52,7 +52,7 @@ var data = { employeeID : req.body.eid, groupName : req.body.groupName, listEmpl
 	// check if grpname already exists
  	collection.insertOne({
 		groupName : data.groupName,
-		eid : data.employeeID,
+		createdBy : data.employeeID,
 		members : id_array
 	},	function(err,result){
 			res.setHeader('Content-Type', 'application/json');
@@ -62,7 +62,7 @@ var data = { employeeID : req.body.eid, groupName : req.body.groupName, listEmpl
 				//res.json(respo);
 				//res.end();
 			}
-			assert.equal(err,null);
+//			assert.equal(err,null);
 			console.log("Inserted Group with Name: " + data.groupName);
 			var respo = {inserted : 'true'};
 			res.send(JSON.stringify(respo));
@@ -221,10 +221,11 @@ exports.Add = function(req, res) {
 } */
 
 exports.Delete = function(req, res) {
-    var id = req.params.id;
+	console.log('delete request..' + req.params.id);
+	var id = req.params.id;
     console.log('Deleting group: ' + id);
     db.collection('groups', function(err, collection) {
-        collection.remove({'id':id}, {safe:true}, function(err, result) {
+        collection.remove({'_id': new mongo.ObjectId(id)}, {safe:true}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred - ' + err});
             } else {

@@ -16,7 +16,7 @@ app.controller('OperationGroupController', function($scope,$http,$state,apiServi
  $scope.submit = function()
   {
       var dataToSend = {
-          "eid" : $scope.checkedEmp[0], //after login
+          "createdBy" : $scope.checkedEmp[0], //after login
           "groupName" : $scope.groupName,
           "members" : $scope.checkedEmp
       }
@@ -25,6 +25,7 @@ app.controller('OperationGroupController', function($scope,$http,$state,apiServi
             apiService.apiCalltoServer('Groups','POST',dataToSend).then(function(response)
             {
                 alert("Created");
+				$state.go('master.groups');
             });
       }
       else
@@ -32,6 +33,7 @@ app.controller('OperationGroupController', function($scope,$http,$state,apiServi
             apiService.apiCalltoServer('Groups','PUT',dataToSend).then(function(response)
             {
                 alert("Updated");
+				$state.go('master.groups');
             });
       }
   }

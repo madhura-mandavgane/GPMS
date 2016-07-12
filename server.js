@@ -43,6 +43,7 @@ app.post('/groups',             groups.createNewGroup);
 app.post('/group/employees',    groups.getEmployeesForGroup);
 app.post('/groupAvailability',  groups.groupAvailable);
 app.get('/employee/:id/groups', groups.GetGroupsOfEmployee);
+app.delete('/groups/:id',       groups.Delete);
 
 app.get ('/employees',          employees.getAllEmployees);
 app.post('/employee',           employees.getEmployeesById);

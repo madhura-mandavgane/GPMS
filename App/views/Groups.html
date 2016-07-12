@@ -18,7 +18,7 @@
                             <td style="width:35%;"><div ng-repeat="d in data.names">{{d.first_name}} {{d.last_name}}</div></td>
                             <td style="width:25%;">{{data.first_name}} {{data.last_name}}</td>
                             <td style="width:10%;text-align:center;"><a ng-click="editRecord(data)">Edit</a>
-                                <a ng-click="deleteRecord(data.groupID)" class="delete">Delete</a>
+                                <a ng-click="deleteRecord(data._id)" class="delete">Delete</a>
 							</td>  
 						</tr>
 				</tbody>
