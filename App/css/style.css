@@ -41,7 +41,7 @@
 }
 .col-xs-1.logout a:hover,.nav-container .nav-bar a:hover,.nav-container .nav-bar a:active,.active
 {
-    color: #001f4d;
+    color: #001f4d !important;
     cursor: pointer;
     text-decoration: none;
 }
