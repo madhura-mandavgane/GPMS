@@ -75,7 +75,7 @@ list();
 
 $scope.editRecord = function()
 {
-	$state.go('master.operationGroup',{action:'edit'},{reload:true});
+	$state.go('master.operationGroup',{'action':'edit'},{reload:true});
 }
 
 $scope.deleteRecord = function(groupId)

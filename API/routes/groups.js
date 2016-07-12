@@ -229,11 +229,21 @@ exports.Delete = function(req, res) {
             if (err) {
                 res.send({'error':'An error has occurred - ' + err});
             } else {
-                console.log('' + result + ' document(s) deleted');
-                res.send(req.body);
+                db.collection('polls', function(err, collection) {
+				collection.remove({'ParticipantGroups.groupId': id}, {safe:true}, function(err, result) {
+					if (err) {
+						res.send({'error':'An error has occurred - ' + err});
+					} else {
+						console.log('' + result + ' document(s) deleted');
+						res.send(req.body);
+					}
+					});
+				});
             }
         });
     });
+	
+	
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

@@ -2,7 +2,7 @@ app.controller('OperationGroupController', function($scope,$http,$state,apiServi
  $scope.groupName = "";
  $scope.checkedEmp = [];
  
- if($stateParams.operation == "add")
+ if($stateParams.action == "add")
  $scope.title = "New Group";
  else
  $scope.title = "Edit Group";
@@ -20,7 +20,7 @@ app.controller('OperationGroupController', function($scope,$http,$state,apiServi
           "groupName" : $scope.groupName,
           "members" : $scope.checkedEmp
       }
-      if($stateParams.operation == "add")
+      if($stateParams.action == "add")
       {
             apiService.apiCalltoServer('Groups','POST',dataToSend).then(function(response)
             {
